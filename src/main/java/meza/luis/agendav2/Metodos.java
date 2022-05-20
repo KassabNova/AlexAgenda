@@ -112,6 +112,33 @@ public class Metodos {
         return resultados;
     }
 
+    public boolean Eliminar(String id){
+        Connection conexion = obtenerConexion();
+        boolean resultado = false;
+        try {
+            String query = "delete from Personas where Id = ?";
+            PreparedStatement instruccion = conexion.prepareStatement(query);
+            instruccion.setString(1, id);
+            try {
+                resultado = (instruccion.executeUpdate() > 0) ? true : false;
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Exception: " + ex);
+            }
+            instruccion.close();
+        } catch (SQLException ex) {
+            resultado = false;
+            Logger.getLogger(Metodos.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                conexion.close();
+            } catch (SQLException ex) {
+                login.log(Level.SEVERE, null, ex);
+            }
+        }
+        return resultado;
+
+    }
     public byte[] obtenerFoto(int id) {
         byte[] resultados = new byte[127];
         Connection conexion = obtenerConexion();

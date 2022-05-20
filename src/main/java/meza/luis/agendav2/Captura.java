@@ -280,7 +280,11 @@ public class Captura extends javax.swing.JInternalFrame {
         jBModificar.setText("Modificar");
 
         jBEliminar.setText("Eliminar");
-
+        jBEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEliminarActionPerformed(evt);
+            }
+        });
         jBLimpiar.setText("Limpiar");
         jBLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -407,8 +411,23 @@ public class Captura extends javax.swing.JInternalFrame {
 
         Metodos enlace = new Metodos();
         enlace.Agregar(nombre, apellido, domicilio, email, fechadenacimiento, edad, sexo, telefono, fis, longitud);
+        JOptionPane.showMessageDialog(rootPane, "Se agregó","Agregando", JOptionPane.OK_OPTION);
     }//GEN-LAST:event_jBAgregarActionPerformed
-
+    private void jBEliminarActionPerformed(java.awt.event.ActionEvent evt) {
+        Metodos enlace = new Metodos();
+        String idFila= JOptionPane.showInputDialog(rootPane, "ID de fila a borrar?",
+                "BORRANDO", JOptionPane.QUESTION_MESSAGE);
+        if (idFila != null) {
+            boolean resultado = enlace.Eliminar(idFila);
+            if(resultado){
+                JOptionPane.showMessageDialog(rootPane, "Se borró exitosamente el usuario:" + idFila);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Hubo un error al borrar el usuario:" + idFila);
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "No se encontró el ID:" + idFila);
+        }
+    }
     private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
         Metodos enlace = new Metodos();
         nomabus = JOptionPane.showInputDialog(rootPane, "Nombre a buscar?",
