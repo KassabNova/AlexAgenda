@@ -521,5 +521,4 @@ public class Captura extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 
-
 }
