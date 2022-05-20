@@ -3,9 +3,7 @@
  */
 package meza.luis.agendav2;
 
-import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.image.ImageObserver;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -79,7 +77,7 @@ public class Captura extends javax.swing.JInternalFrame {
         jBAgregar = new javax.swing.JButton();
         jBModificar = new javax.swing.JButton();
         jBEliminar = new javax.swing.JButton();
-        JBLimpiar = new javax.swing.JButton();
+        jBLimpiar = new javax.swing.JButton();
 
         JLID.setText("ID");
 
@@ -283,8 +281,12 @@ public class Captura extends javax.swing.JInternalFrame {
 
         jBEliminar.setText("Eliminar");
 
-        JBLimpiar.setText("Limpiar");
-
+        jBLimpiar.setText("Limpiar");
+        jBLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBLimpiarActionPerformed();
+            }
+        });
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -296,7 +298,7 @@ public class Captura extends javax.swing.JInternalFrame {
                                         .addComponent(jBAgregar, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jBModificar, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jBEliminar, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(JBLimpiar, javax.swing.GroupLayout.Alignment.TRAILING))
+                                        .addComponent(jBLimpiar, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -311,7 +313,7 @@ public class Captura extends javax.swing.JInternalFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jBEliminar)
                                 .addGap(18, 18, 18)
-                                .addComponent(JBLimpiar)
+                                .addComponent(jBLimpiar)
                                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
@@ -471,12 +473,9 @@ public class Captura extends javax.swing.JInternalFrame {
         return ir.read(0, irp);
     }
 
-    private void JBLimpiarActionPerformed() {
-        JTFApellido.setText("");
-        JTFDomicilio.setText("");
-        JTFEmail.setText("");
-        JTFNombre.setText("");
-        JTFTelefono.setText("");
+    //jBBuscarActionPerformed
+    private void jBLimpiarActionPerformed() {
+        Limpiar_txt();
     }
 
     private ResultSet Registro;
@@ -487,10 +486,14 @@ public class Captura extends javax.swing.JInternalFrame {
         JTFEmail.setText("");
         JTFNombre.setText("");
         JTFTelefono.setText("");
+        JTFEdad.setText("");
+        JDCfechadenacimiento.setDate(null);
+        JRBMasculino.setSelected(false);
+        JRBFemenino.setSelected(false);
+        JLFoto.setIcon(null);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton JBLimpiar;
     private com.toedter.calendar.JDateChooser JDCfechadenacimiento;
     private javax.swing.JFileChooser JFCFoto;
     private javax.swing.JLabel JLFoto;
@@ -508,6 +511,7 @@ public class Captura extends javax.swing.JInternalFrame {
     private javax.swing.JButton jBEliminar;
     private javax.swing.JButton jBFoto;
     private javax.swing.JButton jBModificar;
+    private javax.swing.JButton jBLimpiar;
     private javax.swing.JLabel jLA;
     private javax.swing.JLabel jLD;
     private javax.swing.JLabel jLE;
