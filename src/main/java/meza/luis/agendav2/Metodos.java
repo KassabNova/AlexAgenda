@@ -5,15 +5,27 @@
 
 package meza.luis.agendav2;
 
+import java.awt.Image;
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
 
 /**
  * @author ALUMNOS
@@ -42,23 +54,21 @@ public class Metodos {
         return conexion;
     }
 
-    public void Agregar(String nombre, String apellido, String domicilio,
-                        String email, String fechadenacimiento, int edad, String sexo, String telefono,
-                        FileInputStream fis, int longitud) {
+    public void Agregar(Usuario usuario, FileInputStream fis, int longitud) {
 
         Connection conexion = obtenerConexion();
 
         try {
             String query = "insert into Personas(Nombre, Apellido, Domicilio, Email, FechadeNacimiento, Edad, Sexo, Telefono, Foto) values (?,?,?,?,?,?,?,?,?)";
             PreparedStatement instruccion = conexion.prepareStatement(query);
-            instruccion.setString(1, nombre);
-            instruccion.setString(2, apellido);
-            instruccion.setString(3, domicilio);
-            instruccion.setString(4, email);
-            instruccion.setString(5, fechadenacimiento);
-            instruccion.setInt(6, edad);
-            instruccion.setString(7, sexo);
-            instruccion.setString(8, telefono);
+            instruccion.setString(1, usuario.nombre);
+            instruccion.setString(2, usuario.apellido);
+            instruccion.setString(3, usuario.domicilio);
+            instruccion.setString(4, usuario.email);
+            instruccion.setString(5, usuario.birthdate.toInstant().toString());
+            instruccion.setInt(6, usuario.edad);
+            instruccion.setString(7, usuario.sexo);
+            instruccion.setString(8, usuario.telefono);
             instruccion.setBinaryStream(9, fis, longitud);
             instruccion.executeUpdate();
             instruccion.close();
@@ -139,9 +149,42 @@ public class Metodos {
         return resultado;
 
     }
-    public byte[] obtenerFoto(int id) {
+
+    public static int showConfirmDialog(JRootPane rootPane, String message, String title){
+        return JOptionPane.showConfirmDialog(rootPane, message,title, JOptionPane.YES_NO_OPTION);
+    }
+    public static void showMessageDialog(JRootPane rootPane, String message, String title){
+        JOptionPane.showMessageDialog(rootPane, "Se agregó","Agregando", JOptionPane.OK_OPTION);
+    }
+    public static void mostrarFoto(JRootPane rootPane, JLabel JLFoto, Connection conexion, int id) {
+        byte[] resultado = obtenerFoto(conexion, id);
+        Image imgFoto;
+        if (resultado == null)
+            showMessageDialog(rootPane, "La persona no tiene foto.", "ERROR");
+        else {
+            try {
+                imgFoto = convertirImagen(resultado);
+                Icon foto = new ImageIcon(
+                        imgFoto.getScaledInstance(JLFoto.getWidth(), JLFoto.getHeight(), Image.SCALE_DEFAULT));
+                JLFoto.setIcon(foto);
+            } catch (IOException ex) {
+                showMessageDialog(rootPane, ex.getMessage(), "ERROR");
+            }
+        }
+    }
+    public static Image convertirImagen(byte[] bytes) throws IOException {
+        ByteArrayInputStream bais = new
+                ByteArrayInputStream(bytes);
+        Iterator lector = ImageIO.getImageReadersByFormatName("jpg");
+        ImageReader ir = (ImageReader) lector.next();
+        Object objeto = bais;
+        ImageInputStream iis = ImageIO.createImageInputStream(objeto);
+        ir.setInput(iis, true);
+        ImageReadParam irp = ir.getDefaultReadParam();
+        return ir.read(0, irp);
+    }
+    public static byte[] obtenerFoto(Connection conexion, int id) {
         byte[] resultados = new byte[127];
-        Connection conexion = obtenerConexion();
         try {
             String query = "select Foto from Personas where Id = ?";
             PreparedStatement instruccion = conexion.prepareStatement(query);
