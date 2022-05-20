@@ -89,7 +89,7 @@ public class Metodos {
                     resultados[2] = rs.getString("Apellido");
                     resultados[3] = rs.getString("Domicilio");
                     resultados[4] = rs.getString("Email");
-                    resultados[5] = rs.getString("FechadeNacimineto");
+                    resultados[5] = rs.getString("FechadeNacimiento");
                     resultados[6] = rs.getString("Edad");
                     resultados[7] = rs.getString("Sexo");
                     resultados[8] = rs.getString("Telefono");
