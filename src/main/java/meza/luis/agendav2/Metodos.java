@@ -14,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,7 @@ import javax.swing.JRootPane;
 public class Metodos {
     static Logger login =
             Logger.getLogger(Metodos.class.getName());
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy");
 
     public Connection obtenerConexion() {
         Connection conexion = null;
@@ -67,7 +69,7 @@ public class Metodos {
             instruccion.setString(2, usuario.apellido);
             instruccion.setString(3, usuario.domicilio);
             instruccion.setString(4, usuario.email);
-            instruccion.setString(5, usuario.birthdate.toInstant().toString());
+            instruccion.setString(5, dateFormat.format(usuario.birthdate));
             instruccion.setInt(6, usuario.edad);
             instruccion.setString(7, usuario.sexo);
             instruccion.setString(8, usuario.telefono);
