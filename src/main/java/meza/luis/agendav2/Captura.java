@@ -646,6 +646,18 @@ public class Captura extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_JTFEdadKeyTyped
 
+    private void JTFEmailKeyTyped(java.awt.event.KeyEvent evt) {                                   
+        if (JTFEmail.getText().isEmpty()) {
+            avisoemail.setText("*Campo Requerido");
+
+        } else {
+            if (verificarEmail(JTFEmail.getText())) {
+                avisoemail.setText("");
+            } else {
+                avisoemail.setText("*Correo Invalido");
+            }
+        }
+    }
     private void JTFNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTFNombreKeyTyped
         char validar = evt.getKeyChar();
 
