@@ -30,6 +30,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import static meza.luis.agendav2.Metodos.mostrarFoto;
 import static meza.luis.agendav2.Metodos.showConfirmDialog;
 import static meza.luis.agendav2.Metodos.showMessageDialog;
+import static meza.luis.agendav2.Metodos.verificarEmail;
 
 /**
  * @author ALUMNOS
@@ -504,6 +505,16 @@ public class Captura extends javax.swing.JInternalFrame {
         mostrarFoto(rootPane, JLFoto, conexion, usuario.ID);
     }
 
+    private boolean verificarFormulario(Usuario usuario){
+        int errores = 0;
+        boolean esFormularioValido = true;
+        errores += (verificarEmail(usuario.email)) ? 1 : 0 ;
+
+
+        esFormularioValido = (errores > 0) ? false : true;
+
+        return esFormularioValido;
+    }
     private com.toedter.calendar.JDateChooser JDCfechadenacimiento;
     private javax.swing.JFileChooser JFCFoto;
     private javax.swing.JLabel JLFoto;

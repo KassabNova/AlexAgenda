@@ -17,6 +17,8 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
@@ -212,5 +214,11 @@ public class Metodos {
         return resultados;
     }
 
+    public static boolean verificarEmail(String email){
+        String regex = "^(.+)@(.+)$";
+        boolean isValidEmail = Pattern.compile(regex).matcher(email).matches();
+
+        return isValidEmail;
+    }
 }
 
