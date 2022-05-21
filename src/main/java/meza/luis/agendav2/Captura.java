@@ -595,7 +595,7 @@ public class Captura extends javax.swing.JInternalFrame {
         }
     }
 
-    private void jBEliminarActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jBEliminarActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_jBEliminarActionPerformed
         String idFila = JOptionPane.showInputDialog(rootPane, "ID de fila a borrar?",
                 "BORRANDO", JOptionPane.QUESTION_MESSAGE);
         if (idFila.isBlank()) { //Si idFila no trae nada
@@ -609,7 +609,7 @@ public class Captura extends javax.swing.JInternalFrame {
         }
     }
 
-    private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) throws ParseException {
+    private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) throws ParseException {//GEN-FIRST:event_jBBuscarActionPerformed
         String nombre = JOptionPane.showInputDialog(rootPane, "Nombre a buscar?",
                 "BUSCANDO", JOptionPane.QUESTION_MESSAGE);
         Usuario usuario;
@@ -637,7 +637,6 @@ public class Captura extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBBuscarActionPerformed
 
     private void JTFEdadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTFEdadKeyTyped
-        // TODO add your handling code here:
         char validar = evt.getKeyChar();
 
         if (Character.isLetter(validar)) {
@@ -648,15 +647,14 @@ public class Captura extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_JTFEdadKeyTyped
 
     private void JTFNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTFNombreKeyTyped
-        // TODO add your handling code here:
         char validar = evt.getKeyChar();
 
         if (Character.isDigit(validar)) {
             getToolkit().beep();
             evt.consume();
             JOptionPane.showMessageDialog(rootPane, "Ingresar Solo Letras:");
-        }//GEN-LAST:event_JTFNombreKeyTyped
-    }
+        }
+    }//GEN-LAST:event_JTFNombreKeyTyped
 
     private void JTFApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTFApellidoKeyTyped
         // TODO add your handling code here:
@@ -697,9 +695,9 @@ public class Captura extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBModificarActionPerformed
 
 
-    private void jBLimpiarActionPerformed() {
+    private void jBLimpiarActionPerformed() { //GEN-FIRST:event_jBLimpiarActionPerformed
         limpiarFormulario();
-    }
+    }//GEN-FIRST:event_jBLimpiarActionPerformed
 
     private void limpiarFormulario() {
         JTFApellido.setText("");
@@ -715,6 +713,8 @@ public class Captura extends javax.swing.JInternalFrame {
     }
 
     private void actualizarFormulario(Usuario usuario) {
+        boolean esMasculino = (usuario.sexo == "Masculino") ? true : false;
+
         JLID.setText(String.valueOf(usuario.ID));
         JTFNombre.setText(usuario.nombre);
         JTFApellido.setText(usuario.apellido);
@@ -723,6 +723,9 @@ public class Captura extends javax.swing.JInternalFrame {
         JDCfechadenacimiento.setDate(usuario.birthdate);
         JTFEdad.setText(String.valueOf(usuario.calcularEdad()));
         JTFTelefono.setText(usuario.telefono);
+        JRBMasculino.setSelected(esMasculino);
+        JRBFemenino.setSelected(!esMasculino);
+
         mostrarFoto(rootPane, JLFoto, conexion, usuario.ID);
     }
 
