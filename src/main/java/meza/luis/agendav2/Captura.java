@@ -5,9 +5,9 @@
 package meza.luis.agendav2;
 
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,20 +15,13 @@ import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.toedter.calendar.JTextFieldDateEditor;
@@ -109,6 +102,12 @@ public class Captura extends javax.swing.JInternalFrame {
             }
         });
 
+        JTFEmail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                JTFEmailKeyTyped(evt);
+            }
+        });
+
         jLN.setText("Nombre");
 
         JTFApellido.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -152,7 +151,6 @@ public class Captura extends javax.swing.JInternalFrame {
                 selectorSexo(evt);
             }
         });
-
 
 
         jLED.setText("Edad");
@@ -475,12 +473,12 @@ public class Captura extends javax.swing.JInternalFrame {
             }
         });
         JDCfechadenacimiento.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
-                    @Override
-                    public void propertyChange(PropertyChangeEvent e) {
-                        var dateEditor = (JTextFieldDateEditor)e.getSource();
-                        actualizarEdadOnChange(dateEditor);
-                    }
-                });
+            @Override
+            public void propertyChange(PropertyChangeEvent e) {
+                var dateEditor = (JTextFieldDateEditor) e.getSource();
+                actualizarEdadOnChange(dateEditor);
+            }
+        });
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -548,7 +546,7 @@ public class Captura extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void actualizarEdadOnChange(JTextFieldDateEditor dateEditor) {
-        if(Objects.isNull(dateEditor.getDate())){
+        if (Objects.isNull(dateEditor.getDate())) {
             //Date fue null. Ignorando
         } else {
             int edad = new Usuario().calcularEdad(LocalDate.now(), dateEditor.getDate());
@@ -634,7 +632,8 @@ public class Captura extends javax.swing.JInternalFrame {
         }
     }
 
-    private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) throws ParseException {//GEN-FIRST:event_jBBuscarActionPerformed
+    private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt)
+            throws ParseException {//GEN-FIRST:event_jBBuscarActionPerformed
         String nombre = JOptionPane.showInputDialog(rootPane, "Nombre a buscar?",
                 "BUSCANDO", JOptionPane.QUESTION_MESSAGE);
         Usuario usuario;
@@ -662,17 +661,25 @@ public class Captura extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBBuscarActionPerformed
 
     private void JTFEdadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTFEdadKeyTyped
-        char validar = evt.getKeyChar();
-
-        if (Character.isLetter(validar)) {
-            getToolkit().beep();
-            evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingresar Solo Numero:");
+        if (Character.isLetter(evt.getKeyChar())) {
+            limpiarTextFieldNumeros(evt, JTFEdad);
         }
     }//GEN-LAST:event_JTFEdadKeyTyped
 
-    private void JTFEmailKeyTyped(java.awt.event.KeyEvent evt) {                                   
-        if (JTFEmail.getText().isEmpty()) {
+    private void limpiarTextFieldNumeros(KeyEvent evt, JTextField textField) {
+        getToolkit().beep();
+        evt.consume();
+        textField.setText(textField.getText());
+        showMessageDialog(rootPane, "Ingresar solo numeros.", "Error");
+    }
+    private void limpiarTextFieldTexto(KeyEvent evt, JTextField textField) {
+        getToolkit().beep();
+        evt.consume();
+        textField.setText(textField.getText());
+        showMessageDialog(rootPane, "Ingresar solo texto", "Error");
+    }
+    private void JTFEmailKeyTyped(java.awt.event.KeyEvent evt) {
+        if (JTFEmail.getText().isBlank()) {
             avisoemail.setText("*Campo Requerido");
 
         } else {
@@ -683,46 +690,31 @@ public class Captura extends javax.swing.JInternalFrame {
             }
         }
     }
-    private void JTFNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTFNombreKeyTyped
-        char validar = evt.getKeyChar();
 
-        if (Character.isDigit(validar)) {
-            getToolkit().beep();
-            evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingresar Solo Letras:");
+    private void JTFNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTFNombreKeyTyped
+        if (Character.isDigit(evt.getKeyChar())) {
+            limpiarTextFieldTexto(evt, JTFNombre);
         }
     }//GEN-LAST:event_JTFNombreKeyTyped
 
     private void JTFApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTFApellidoKeyTyped
         // TODO add your handling code here:
-        char validar = evt.getKeyChar();
-
-        if (Character.isDigit(validar)) {
-            getToolkit().beep();
-            evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingresar Solo Letras:");
+        if (Character.isDigit(evt.getKeyChar())) {
+            limpiarTextFieldTexto(evt, JTFApellido);
         }
     }//GEN-LAST:event_JTFApellidoKeyTyped
 
     private void JTFDomicilioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTFDomicilioKeyTyped
         // TODO add your handling code here:
-        char validar = evt.getKeyChar();
-
-        if (Character.isDigit(validar)) {
-            getToolkit().beep();
-            evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingresar Solo Letras:");
+        if (Character.isDigit(evt.getKeyChar())) {
+            limpiarTextFieldTexto(evt, JTFDomicilio);
         }
     }//GEN-LAST:event_JTFDomicilioKeyTyped
 
     private void JTFTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTFTelefonoKeyTyped
         // TODO add your handling code here:
-        char validar = evt.getKeyChar();
-
-        if (Character.isLetter(validar)) {
-            getToolkit().beep();
-            evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingresar Solo Numero:");
+        if (Character.isLetter(evt.getKeyChar())) {
+            limpiarTextFieldNumeros(evt, JTFTelefono);
         }
     }//GEN-LAST:event_JTFTelefonoKeyTyped
 

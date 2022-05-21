@@ -158,7 +158,7 @@ public class Metodos {
         return JOptionPane.showConfirmDialog(rootPane, message,title, JOptionPane.YES_NO_OPTION);
     }
     public static void showMessageDialog(JRootPane rootPane, String message, String title){
-        JOptionPane.showMessageDialog(rootPane, "Se agregó","Agregando", JOptionPane.OK_OPTION);
+        JOptionPane.showMessageDialog(rootPane, message, title, JOptionPane.OK_OPTION);
     }
     public static void mostrarFoto(JRootPane rootPane, JLabel JLFoto, Connection conexion, int id) {
         byte[] resultado = obtenerFoto(conexion, id);
