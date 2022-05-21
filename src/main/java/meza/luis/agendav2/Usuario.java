@@ -45,4 +45,13 @@ public class Usuario {
         this.edad = period.getYears();
         return period.getYears();
     }
+    public int calcularEdad(LocalDate curDate, Date selectedDate) {
+        LocalDate localSelectedDate = selectedDate
+                .toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDate();
+        //calculates the difference betwween two dates
+        Period period = Period.between(localSelectedDate, curDate);
+
+        return period.getYears();
+    }
 }
