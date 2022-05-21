@@ -5,6 +5,8 @@
 package meza.luis.agendav2;
 
 import java.awt.Image;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,8 +14,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -26,6 +30,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.toedter.calendar.JTextFieldDateEditor;
 
 import static meza.luis.agendav2.Metodos.mostrarFoto;
 import static meza.luis.agendav2.Metodos.showConfirmDialog;
@@ -146,6 +152,8 @@ public class Captura extends javax.swing.JInternalFrame {
                 selectorSexo(evt);
             }
         });
+
+
 
         jLED.setText("Edad");
 
@@ -466,7 +474,13 @@ public class Captura extends javax.swing.JInternalFrame {
                 jBLimpiarActionPerformed();
             }
         });
-
+        JDCfechadenacimiento.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent e) {
+                        var dateEditor = (JTextFieldDateEditor)e.getSource();
+                        actualizarEdadOnChange(dateEditor);
+                    }
+                });
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -532,6 +546,17 @@ public class Captura extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void actualizarEdadOnChange(JTextFieldDateEditor dateEditor) {
+        if(Objects.isNull(dateEditor.getDate())){
+            //Date fue null. Ignorando
+        } else {
+            int edad = new Usuario().calcularEdad(LocalDate.now(), dateEditor.getDate());
+            JTFEdad.setText(String.valueOf(edad));
+        }
+
+    }
+
     private void selectorSexo(java.awt.event.ActionEvent evt) {
         var button = (JRadioButton) evt.getSource();
         button.setSelected(true);
