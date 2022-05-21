@@ -531,8 +531,7 @@ public class Captura extends javax.swing.JInternalFrame {
         );
 
         pack();
-    }
-
+    }// </editor-fold>//GEN-END:initComponents
     private void selectorSexo(java.awt.event.ActionEvent evt) {
         var button = (JRadioButton) evt.getSource();
         button.setSelected(true);
